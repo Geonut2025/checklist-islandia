@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist Islândia 2025 - Luísa Borges</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f1f1;
+      margin: 0;
+      padding: 1rem;
+    }
+    h1, h2 {
+      color: #004d40;
+    }
+    .secao {
+      background: white;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+    input[type="checkbox"] {
+      transform: scale(1.2);
+      margin-right: 0.5rem;
+    }
+    input[type="text"] {
+      flex: 1;
+      font-size: 1rem;
+      padding: 0.2rem;
+    }
+    button {
+      margin-left: 0.5rem;
+      background: #e53935;
+      border: none;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .add-item {
+      display: flex;
+      margin-top: 1rem;
+    }
+    .add-item input {
+      flex: 1;
+    }
+    .add-item select {
+      margin-left: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Checklist Islândia 2025 – Luísa Borges</h1>
+
+  <div class="secao">
+    <h2>Todos os Itens</h2>
+    <ul id="lista"></ul>
+    <div class="add-item">
+      <input type="text" id="novo-item" placeholder="Novo item...">
+      <select id="nova-bagagem">
+        <option value="porao">Bagagem de Porão (20 kg)</option>
+        <option value="cabine">Bagagem de Cabine (12 kg)</option>
+        <option value="mochila">Mochila de Cabine</option>
+        <option value="voo">Contigo no Voo</option>
+      </select>
+      <button onclick="adicionarItem()">Adicionar</button>
+    </div>
+  </div>
+
+  <script>
+    const listaItens = [
+      { nome: "2 calças de caminhada", tipo: "porao" },
+      { nome: "1 calça cardada (uso urbano, opcional)", tipo: "porao" },
+      { nome: "1 casaco polar com fecho", tipo: "porao" },
+      { nome: "2 camisolas térmicas técnicas", tipo: "porao" },
+      { nome: "2 polares MH100 Quechua", tipo: "porao" },
+      { nome: "2 t-shirts simples (hotel e cidade)", tipo: "porao" },
+      { nome: "1 camisola leve (jantares)", tipo: "porao" },
+      { nome: "1 ou 2 leggings térmicas", tipo: "porao" },
+      { nome: "Roupa interior (7 dias)", tipo: "porao" },
+      { nome: "4–5 pares de meias técnicas/lã", tipo: "porao" },
+      { nome: "Chinelos (hotel/duche)", tipo: "porao" },
+      { nome: "Mais um par de botas com Gore-Tex", tipo: "porao" },
+      { nome: "Mini frascos de shampoo e amaciador hidratantes", tipo: "porao" },
+      { nome: "Toalha compacta piscina", tipo: "porao" },
+      { nome: "Toalha compacta diária", tipo: "porao" },
+      { nome: "Toalhitas húmidas", tipo: "porao" },
+      { nome: "Lima de unhas", tipo: "porao" },
+      { nome: "Pensos protetores diários", tipo: "porao" },
+      { nome: "Escova e pasta de dentes", tipo: "porao" },
+      { nome: "Escovilhões interdentais", tipo: "porao" },
+      { nome: "Cosmética (mínimo indispensável)", tipo: "porao" },
+      { nome: "Capa de chuva", tipo: "porao" },
+      { nome: "Organizadores de bagagem", tipo: "porao" },
+      { nome: "Saco para roupa suja", tipo: "porao" },
+      { nome: "Saco impermeável (para roupa molhada ou mochila)", tipo: "porao" },
+      { nome: "Tapete dobrável", tipo: "porao" },
+      { nome: "Medicação", tipo: "cabine" },
+      { nome: "Toda a medicação crónica (7 dias)", tipo: "cabine" },
+      { nome: "Medicação SOS (VPPB, digestivo, dor)", tipo: "cabine" },
+      { nome: "Organizador semanal de comprimidos", tipo: "cabine" },
+      { nome: "Cartão Europeu de Saúde (CESD)", tipo: "cabine" },
+      { nome: "Cartão de Cidadão", tipo: "cabine" },
+      { nome: "Cartão multibanco/crédito", tipo: "cabine" },
+      { nome: "Apólice do seguro", tipo: "cabine" },
+      { nome: "App da Play Airlines", tipo: "cabine" },
+      { nome: "Powerbank", tipo: "cabine" },
+      { nome: "Óculos de sol", tipo: "cabine" },
+      { nome: "Protetor solar + labial", tipo: "cabine" },
+      { nome: "Álcool gel", tipo: "cabine" },
+      { nome: "Lenços de papel", tipo: "cabine" },
+      { nome: "Bálsamo labial hidratante", tipo: "cabine" },
+      { nome: "Desodorizante", tipo: "cabine" },
+      { nome: "Bolsa impermeável para telemóvel", tipo: "cabine" },
+      { nome: "Tisanas para o termo (6 a 8 saquetas variadas)", tipo: "cabine" },
+      { nome: "Snacks sem açúcar (6 a 8 unidades)", tipo: "cabine" },
+      { nome: "Ténis confortáveis", tipo: "voo" },
+      { nome: "1 casaco NH500 impermeável", tipo: "voo" },
+      { nome: "1 casaco quente castanho (polar)", tipo: "voo" },
+      { nome: "Écharpe verde (para o avião)", tipo: "voo" },
+      { nome: "Bolsa ao pescoço (documentos, dinheiro e telemóvel)", tipo: "voo" }
+    ];
+
+    function renderLista() {
+      const ul = document.getElementById("lista");
+      ul.innerHTML = "";
+      listaItens.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <input type="checkbox">
+          <input type="text" value="${item.nome}" onchange="editarItem(${index}, this.value)">
+          <select onchange="mudarTipo(${index}, this.value)">
+            <option value="porao" ${item.tipo === "porao" ? "selected" : ""}>Bagagem de Porão (20 kg)</option>
+            <option value="cabine" ${item.tipo === "cabine" ? "selected" : ""}>Bagagem de Cabine (12 kg)</option>
+            <option value="mochila" ${item.tipo === "mochila" ? "selected" : ""}>Mochila de Cabine</option>
+            <option value="voo" ${item.tipo === "voo" ? "selected" : ""}>Contigo no Voo</option>
+          </select>
+          <button onclick="removerItem(${index})">✕</button>
+        `;
+        ul.appendChild(li);
+      });
+      localStorage.setItem("checklistLuisa", JSON.stringify(listaItens));
+    }
+
+    function adicionarItem() {
+      const nome = document.getElementById("novo-item").value.trim();
+      const tipo = document.getElementById("nova-bagagem").value;
+      if (nome) {
+        listaItens.push({ nome, tipo });
+        document.getElementById("novo-item").value = "";
+        renderLista();
+      }
+    }
+
+    function removerItem(index) {
+      listaItens.splice(index, 1);
+      renderLista();
+    }
+
+    function editarItem(index, novoNome) {
+      listaItens[index].nome = novoNome;
+      renderLista();
+    }
+
+    function mudarTipo(index, novoTipo) {
+      listaItens[index].tipo = novoTipo;
+      renderLista();
+    }
+
+    renderLista();
+  </script>
+</body>
+</html>
